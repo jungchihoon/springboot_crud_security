@@ -4,16 +4,22 @@ name: Docker edu
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-
-on:
-  schedule:
-    - cron: '29 15 * * *'
-  push:
-    branches: [ "master" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "master" ]
+on:      
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Docker TAG"
+        required: true
+        default: "master"
+# on:
+#   schedule:
+#     - cron: '29 15 * * *'
+#   push:
+#     branches: [ "master" ]
+#     # Publish semver tags as releases.
+#     tags: [ 'v*.*.*' ]
+#   pull_request:
+#     branches: [ "master" ]
 
 env:
   # Use docker.io for Docker Hub if empty
