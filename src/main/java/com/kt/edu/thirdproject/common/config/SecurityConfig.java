@@ -1,5 +1,6 @@
 package com.kt.edu.thirdproject.common.config;
 
+import com.kt.edu.thirdproject.common.service.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +36,14 @@ public class SecurityConfig {
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+    ////////////////Oauth 코딩 추가 //////////////////
+    private final CustomOAuth2UserService customOAuth2UserService;
 
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService) {
+
+        this.customOAuth2UserService = customOAuth2UserService;
+    }
+    ////////////////////////////////////////////////////////
     //@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // configure AuthenticationManager so that it knows from where to load
@@ -104,6 +112,17 @@ public class SecurityConfig {
         http.sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService)));
+
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/").permitAll()
+                        .anyRequest().authenticated());
+
 
         return http.build();
     }

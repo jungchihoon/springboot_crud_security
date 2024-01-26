@@ -1,5 +1,7 @@
 package com.kt.edu.thirdproject.common.config;
 
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -46,6 +48,10 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI springShopOpenAPI() {
+        SecurityScheme securityScheme = new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
+                .in(SecurityScheme.In.HEADER).name("Authoriztaion");
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
         return new OpenAPI()
                 .info(new Info().title(title)
                         .description(desc)

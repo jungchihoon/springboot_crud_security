@@ -23,6 +23,32 @@ spring:
 #        url: http://localhost:8080
 
 # logging
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            clientId: jKzVvHYzF76aFObqHEzn
+            clientSecret: mZaPjqIF0e
+            authorization-grant-type: authorization_code
+            redirectUri: http://localhost:8080/login/oauth2/code/naver # "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - name
+              - email
+          # Google
+          google:
+            client-id: 607637408578-i6mdh37fkeclidmaeqen59ns114i6hb9.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - profile
+              - email
+              #redirect-uri: http://localhost:8080/oauth2/callback/{registrationId}
+        provider:
+          naver:
+            authorizationUri: https://nid.naver.com/oauth2.0/authorize
+            tokenUri: https://nid.naver.com/oauth2.0/token
+            userInfoUri: https://openapi.naver.com/v1/nid/me
+            userNameAttribute: response
 logging:
   config: classpath:log4j2.xml
 
@@ -33,7 +59,12 @@ jasypt:
 
 jwt:
   secret: edujwt
-
+app:
+  oauth2:
+    # springboot
+    #authorized-redirect-uris=http://localhost:8080/oauth2/redirect
+    # frontend 3000 , nginx 로 변경시 80
+    authorized-redirect-uris=http://211.43.13.165:40007/oauth2/redirect
 # app
 app-info:
   app-name: "edu-spring-data-jdbc"
