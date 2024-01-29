@@ -89,7 +89,7 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/api/login",
                                         "/login",
-                                        "/api/v1/**",
+                                       // "/api/v1/**",
                                         "/h2-console/*"
                                         ).permitAll()
                                 .anyRequest().authenticated()
